@@ -14,26 +14,29 @@ class Extension extends BaseExtension
 
     public function calculateReadingTimeAction($content)
     {
-        $words = str_word_count($content);
-        $wordsPerSecond = $this->config['wordsPerMinute'] / 60;
-        $readingTimeSeconds = $words / $wordsPerSecond;
-        $readingTimeMinutes = $readingTimeSeconds / 60;
+        $readingTime = new ReadingTime;
+
+        $readingTime->wordcount = str_word_count($content);
+        $readingTime->wordsPerMinute = $this->config['wordsPerMinute'];
+        $readingTime->wordsPerSecond = $readingTime->wordsPerMinute / 60;
+        $readingTime->readingTimeSeconds = $readingTime->wordcount / $readingTime->wordsPerSecond;
+        $readingTime->readingTimeMinutes = $readingTime->readingTimeSeconds / 60;
 
         switch ($this->config['round']) {
             case true:
-                $readingTimeMinutes = round($readingTimeMinutes);
+                $readingTime->readingTimeMinutes = round($readingTime->readingTimeMinutes);
                 break;
             case 'up':
-                $readingTimeMinutes = ceil($readingTimeMinutes);
+                $readingTime->readingTimeMinutes = ceil($readingTime->readingTimeMinutes);
                 break;
             case 'down':
-                $readingTimeMinutes = floor($readingTimeMinutes);
+                $readingTime->readingTimeMinutes = floor($readingTime->readingTimeMinutes);
                 break;
             default:
-                $readingTimeMinutes = (int)$readingTimeMinutes;
+                $readingTime->readingTimeMinutes = (int)$readingTime->readingTimeMinutes;
         }
 
-        return $readingTimeMinutes;
+        return $readingTime;
     }
 
     /**
@@ -44,7 +47,7 @@ class Extension extends BaseExtension
     protected function getDefaultConfig()
     {
         return array(
-            'wordsPerMinute' => 270,
+            'wordsPerMinute' => 225,
             'round' => true,
         );
     }
