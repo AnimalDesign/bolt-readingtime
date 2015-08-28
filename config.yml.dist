@@ -1,0 +1,2 @@
+wordsPerMinute: 270
+round: true # Possible values: true, 'up', 'down'
