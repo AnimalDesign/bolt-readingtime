@@ -12,6 +12,17 @@ Add the `readingtime` function somewhere to your template:
 
 Will print something like `14 Min.`.
 
+Or store the readingtiime-object in a variable and access more data:
+
+````
+{% set readingtime = readingtime(record.body) %}
+{{ readingtime.wordcount }}
+{{ readingtime.wordsPerMinute }}
+{{ readingtime.wordsPerSecond }}
+{{ readingtime.readingTimeMinutes }}
+{{ readingtime.readingTimeSeconds }}
+````
+
 ## Configuration
 
 - `wordsPerMinute` (default: 270): Average read words per minute
